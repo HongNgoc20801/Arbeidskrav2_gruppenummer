@@ -9,6 +9,9 @@ header{
     color: white;
     padding: 20px;
 }
+h2{
+    text-align: center;
+}
 #character_list{
     display: flex;
     flex-wrap: wrap;
@@ -22,7 +25,7 @@ header{
     padding:15px;
     border-radius: 8px;
     box-shadow: 2px 4px 15px rgb(59, 57, 57);
-    text-align: center;
+    text-align: left;
     background-color: beige;
 }
 .delete-btn{
@@ -31,6 +34,7 @@ header{
     color: red;
     font-size: 15px;
     cursor: pointer;
+    
 }
 .delete-btn:hover {
     color: darkred;
