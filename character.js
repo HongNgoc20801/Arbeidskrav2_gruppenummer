@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", async () =>{
-    const characterList = document.getElementById("character_list");
+    const stat = document.getElementById("character_list");
 
     let allCharacters =[];
     let nextURL = "https://swapi.dev/api/people";
@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", async () =>{
             <p> <strong> Films : <strong> ${filmTitle.join(",")}</p>
             <p> <strong> Species : <strong> ${speciesName}</p>
             `
-            characterList.appendChild(characterDiv);
+            stat.appendChild(characterDiv);
         }
 
     } catch (error){
