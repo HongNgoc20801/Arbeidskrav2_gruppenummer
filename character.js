@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", async () =>{
-    const stat = document.getElementById("character_list");
+    const characterList = document.getElementById("character_list");
 
     let allCharacters =[];
     let nextURL = "https://swapi.dev/api/people";
@@ -37,11 +37,23 @@ document.addEventListener("DOMContentLoaded", async () =>{
             //Populate Character Card
             characterDiv.innerHTML = `
             <h2> ${character.name} </h2>
+            <p> <strong> Species : <strong> ${speciesName}</p>
             <p> <strong> Birth Year : <strong> ${character.birth_year}</p>
             <p> <strong> Films : <strong> ${filmTitle.join(",")}</p>
-            <p> <strong> Species : <strong> ${speciesName}</p>
             `
-            stat.appendChild(characterDiv);
+            
+            //Create delete button 
+             const deleteButton = document.createElement("button");
+             deleteButton.innerHTML = `<i class="fa-solid fa-trash"></i>`;
+             deleteButton.classList.add("delete-btn");
+             deleteButton.addEventListener("click", () => {
+                characterDiv.remove();                
+             });
+
+
+
+             characterList.appendChild(characterDiv);
+             characterDiv.appendChild(deleteButton);
         }
 
     } catch (error){
