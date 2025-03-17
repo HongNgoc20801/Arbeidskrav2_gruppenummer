@@ -1,0 +1,23 @@
+{
+  "name": "arbeidskrav2_gruppenummer",
+  "version": "1.0.0",
+  "main": "character.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HongNgoc20801/Arbeidskrav2_gruppenummer.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HongNgoc20801/Arbeidskrav2_gruppenummer/issues"
+  },
+  "homepage": "https://github.com/HongNgoc20801/Arbeidskrav2_gruppenummer#readme",
+  "description": "",
+  "dependencies": {
+    "jest": "^29.7.0"
+  }
+}
