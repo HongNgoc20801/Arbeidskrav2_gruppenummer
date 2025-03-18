@@ -12,11 +12,25 @@
         <h1> Star War Characters</h1>
     </header>
     <section>
-        <label for = "species_type"> Type by Species</label>
+        <label for = "species_type">Type by Species</label>
         <select id = "species_type">
             <option value ="all">All</option>
         </select>
     </section>
+
+    <button id ="add-character-btn">+</button>
+    <div id="add-character-form-list" style="display:none;">
+        <form id ="add-character-form"class="edit-form">
+            <input type ="text"id="new-name"placeholder="Name"required>
+            <select id="new-species"required></select>
+            <input type="text"id="new-birth-year"placeholder="Birth Year" required>
+            <input type="text"id="new-films"placeholder="Films(comme separated)" required>
+            <button type="submit">Save</button>
+            <button type="button"id="cancel-add">Cancel</button>
+        </form>
+
+    </div>
+
     <section id ="character_list">
     <!-- -->
     </section>

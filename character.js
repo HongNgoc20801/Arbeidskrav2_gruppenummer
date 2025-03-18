@@ -130,34 +130,36 @@ async function renderCharacters(allCharacters, container) {
         ]);
 
 
-         //Populate Character Card
-         characterDiv.innerHTML = `
+        //Populate Character Card
+        characterDiv.innerHTML = `
             <h2> ${character.name} </h2>
             <p> <strong> Species : <strong> ${speciesName}</p>
             <p> <strong> Birth Year : <strong> ${character.birth_year}</p>
             <p> <strong> Films : <strong> ${filmTitle.join(",")}</p>
 
-            `
+        `
         
-          const editButton =document.createElement("button");
-          editButton.innerHTML=`<i class="fa-solid fa-pen"></i>`;
-          editButton.classList.add("edit-btn");
-          editButton.addEventListener("click",() => handleEditCharacter(character,characterDiv));  
-          //Create delete button 
-          const deleteButton = document.createElement("button");
-          deleteButton.innerHTML = `<i class="fa-solid fa-trash"></i>`;
-          deleteButton.classList.add("delete-btn");
-          deleteButton.addEventListener("click", () => {
-             characterDiv.remove();                
-          });
+        const editButton =document.createElement("button");
+        editButton.innerHTML=`<i class="fa-solid fa-pen"></i>`;
+        editButton.classList.add("edit-btn");
+        editButton.addEventListener("click",() => handleEditCharacter(character,characterDiv));  
+        //Create delete button 
+        const deleteButton = document.createElement("button");
+        deleteButton.innerHTML = `<i class="fa-solid fa-trash"></i>`;
+        deleteButton.classList.add("delete-btn");
+        deleteButton.addEventListener("click", () => {
+            characterDiv.remove();                
+        });
 
-          characterDiv.appendChild(editButton);
-          characterDiv.appendChild(deleteButton);
-          container.appendChild(characterDiv);
-
-
-        
+        characterDiv.appendChild(editButton);
+        characterDiv.appendChild(deleteButton);
+        container.appendChild(characterDiv);
     
     }
 }
+
+
+
+
+
 
