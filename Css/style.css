@@ -9,6 +9,12 @@ header{
     color: white;
     padding: 20px;
 }
+
+label{
+    font-weight: bold;
+    text-align: left;
+}
+
 h2{
     text-align: center;
 }
