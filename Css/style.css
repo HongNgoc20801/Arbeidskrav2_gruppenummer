@@ -9,6 +9,12 @@ header{
     color: white;
     padding: 20px;
 }
+
+label{
+    font-weight: bold;
+    text-align: left;
+}
+
 h2{
     text-align: center;
 }
@@ -38,37 +44,4 @@ h2{
 }
 .delete-btn:hover {
     color: darkred;
-} 
-.edit-btn{
-    background: none;
-    border: none;
-    color: rgb(30, 132, 234);
-    font-size: 15px;
-    cursor: pointer;
-    
-}
-
-.delete-btn:hover {
-    color: rgb(15, 80, 171);
-}
-
-.edit-form{
-    display: flex;
-    flex-direction: column;
-    gap:10px;
-    padding:15px;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 2px 4px 15px rgb(224, 139, 49);
-    width: 220px;
-}
-
-.edit-form input, .edit_form select{
-    padding: 5px;
-    font-size: 14px;
-}
-
-.edit-form button:hover{
-    background-color: gray;
-
 }

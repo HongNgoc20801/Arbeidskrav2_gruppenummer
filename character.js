@@ -1,10 +1,33 @@
-
 document.addEventListener("DOMContentLoaded", async () =>{
     const characterList = document.getElementById("character_list");
-
+    const speciesFilter = document.getElementById("species_type");
 
     try{
         const allCharacters = await fetchCharacters();
+
+        //Get all species and add to filyer menu
+        const uniqueSpecies = new Set();
+        for(const character of allCharacters){
+            const speciesName = await fetchSpecies(character.species);
+            uniqueSpecies.add(speciesName);
+        }
+
+        // Update filter-dropdown
+        uniqueSpecies.forEach(species =>{
+            const option = document.createElement("option");
+            option.value = species;
+            option.textContent = species;
+            speciesFilter.appendChild(option);
+        });
+
+        // after filter change
+        speciesFilter.addEventListener("change",() =>{
+            const selectedSpecies = speciesFilter.value;
+            const filteredCharacters = selectedSpecies == "all" ?allCharacters
+            : allCharacters.filter(char => char.speciesName === selectedSpecies);
+            renderCharacters(filteredCharacters, characterList);
+        });
+
         renderCharacters(allCharacters,characterList);
     }catch(error){
         console.error("Error fetching Star Wars character:", error);
@@ -13,6 +36,7 @@ document.addEventListener("DOMContentLoaded", async () =>{
 
 // Fetch all Characters
 async function fetchCharacters() {
+
     let allCharacters =[];
     let nextURL = "https://swapi.dev/api/people";
     while(nextURL){
@@ -25,8 +49,8 @@ async function fetchCharacters() {
 }
 
 // Fetch Film 
-
 async function fetchFilmsTitles(filmUrls) {
+
     const filmTitle = await Promise.all(
         filmUrls.map (async(filmUrl)=>{
             const filmResponse = await fetch(filmUrl);
@@ -34,101 +58,61 @@ async function fetchFilmsTitles(filmUrls) {
             return filmData.title;
         })
     );
-    return filmTitle;
-    
+    return filmTitle;   
 }
 
 // Fetch Species
-
 async function fetchSpecies(speciesUrls) {
-    if(speciesUrls.length ===0) return "Unknown";
 
+    if(speciesUrls.length ===0) return "Unknown";
     const speciesResponse = await fetch(speciesUrls[0]);
     const speciesData = await speciesResponse.json();
-    return speciesData.name;
-    
+    return speciesData.name;    
 }
 
-// Function to handle editing a character
-async function handleEditCharacter(character,characterDiv){
-    const editForm = document.createElement("form");
-    editForm.classList.add("edit-form");
+//background color based on Species
+const speciesColors = {
+    "Unknown":"#ffffff",
+    "Human": "#FF5733",
+    "Wookie": "#3357FF",
+    "Droid": "#33FF57",
+    "Twi'lek": "#2980B9",
+    "Rodian": "#F1C40F",
+    "Hutt": "#8E44AD",
+    "Yoda's species":"#E67E22",
+    "Trandoshan":"#1ABC9C",
+    "Mon Calamari":"#2ECC71",
+    "Ewok":"#3498DB"
+    };
+function getRandomColor(){
+    return `#${Math.floor(Math.random()*16777215).toString(16)}`;
+}
 
-    const nameInput =document.createElement("input");
-    nameInput.type="text";
-    nameInput.value=character.name;
-    nameInput.required=true;
-
-    const speciesSelect = document.createElement("select");
-    speciesSelect.required=true;
-
-    let speciesData =[];
-    try {
-        const response =await fetch ("https://swapi.dev/api/species/");
-        const data = await response.json();
-        speciesData=data.results;
-
-        speciesData.forEach(species=>{
-            const option =document.createElement("option");
-            option.value=species.url;
-            option.textContent=species.name;
-            if(character.species.includes(species.url)){
-                option.selected=true;
-            }
-            speciesSelect.appendChild(option);
-        });
-    } catch (error){
-        console.error("Error fetching species:", error);
+function speciesBackgroundColor(species){
+    if(!speciesColors[species]){
+        speciesColors[species] = getRandomColor();
     }
-
-    const saveButton = document.createElement("button");
-    saveButton.type="submit";
-    saveButton.textContent="Save";
-
-    const cancelButton = document.createElement("button");
-    cancelButton.type="button";
-    cancelButton.textContent="Cancel";
-    cancelButton.addEventListener("click",() => {
-        editForm.remove();
-        characterDiv.style.display ="block";
-    });
-
-    editForm.appendChild(nameInput);
-    editForm.appendChild(speciesSelect);
-    editForm.appendChild(saveButton);
-    editForm.appendChild(cancelButton);
-
-    editForm.addEventListener("submit",(event) => {
-        event.preventDefault();
-        character.name=nameInput.value;
-        const selectedSpecies = speciesData.find(species=>species.url===speciesSelect.value);
-        character.species = selectedSpecies ? selectedSpecies.url : character.species;
-        
-        characterDiv.querySelector("h2").textContent=character.name;
-        characterDiv.querySelector("p:nth-child(2)").innerHTML=`<strong>Species:</strong> ${selectedSpecies ? selectedSpecies.name:"Unknown"}`;
-
-        editForm.remove();
-        characterDiv.style.display="block";
-        console.log("Character updated:", character);
-    });
-    characterDiv.style.display="none";
-    characterDiv.parentNode.insertBefore(editForm,characterDiv);
+return speciesColors[species];
 }
+        
+
         
 // Render Character Cards
-
 async function renderCharacters(allCharacters, container) {
+    container.innerHTML = "";
+
     for(const character of allCharacters) {
         const characterDiv = document.createElement("div");
         characterDiv.classList.add("characters_card");
 
-
         //Fetch additional details
         const[speciesName, filmTitle] = await Promise.all([
             fetchSpecies(character.species),
-            fetchFilmsTitles(character.films),
+            fetchFilmsTitles(character.films), 
         ]);
 
+        // Save species directly in the object for filtering later
+        character.speciesName = speciesName;
 
          //Populate Character Card
          characterDiv.innerHTML = `
@@ -136,13 +120,8 @@ async function renderCharacters(allCharacters, container) {
             <p> <strong> Species : <strong> ${speciesName}</p>
             <p> <strong> Birth Year : <strong> ${character.birth_year}</p>
             <p> <strong> Films : <strong> ${filmTitle.join(",")}</p>
-
             `
-        
-          const editButton =document.createElement("button");
-          editButton.innerHTML=`<i class="fa-solid fa-pen"></i>`;
-          editButton.classList.add("edit-btn");
-          editButton.addEventListener("click",() => handleEditCharacter(character,characterDiv));  
+
           //Create delete button 
           const deleteButton = document.createElement("button");
           deleteButton.innerHTML = `<i class="fa-solid fa-trash"></i>`;
@@ -151,13 +130,22 @@ async function renderCharacters(allCharacters, container) {
              characterDiv.remove();                
           });
 
-          characterDiv.appendChild(editButton);
-          characterDiv.appendChild(deleteButton);
+          //background Colour
+          characterDiv.style.backgroundColor = speciesBackgroundColor(speciesName);
+ 
           container.appendChild(characterDiv);
-
+          characterDiv.appendChild(deleteButton);
 
         
     
     }
 }
+
+        
+         
+
+           
+            
+           
+
 
