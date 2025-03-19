@@ -6,12 +6,27 @@
     <title>Star Wars Characters</title>
     <link rel="stylesheet" href="Css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+
 
 </head>
 <body>
     <header>
         <h1> Star War Characters</h1>
     </header>
+
+    <form id ="add_character_form">
+        <input type = "text" id="name" placeholder="Character Name" required>
+        <input type="text" id="birth_year" placeholder="Birth Year" required>
+        <select id="species">
+            <option value=""disabled selected>Select a species</option>
+        </select>
+
+        <input type="text" id="films" placeholder="Enter films, separated by commas">
+
+        <button type="submit">Add Character</button>
+    </form>
+
     <section>
         <label for = "species_type">Type by Species</label>
         <select id = "species_type">
