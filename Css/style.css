@@ -51,6 +51,7 @@ h2{
 }
 .delete-btn:hover {
     color: darkred;
+    font-size: 20px;
 } 
 .edit-btn{
     background: none;
@@ -60,9 +61,9 @@ h2{
     cursor: pointer;
     
 }
-
-.delete-btn:hover {
-    color: rgb(15, 80, 171);
+.edit-btn:hover {
+    color: darkblue;
+    font-size: 20px;
 }
 
 .edit-form{
@@ -78,7 +79,7 @@ h2{
 
 .edit-form input, .edit_form select{
     padding: 5px;
-    font-size: 14px;
+    font-size: 15px;
 }
 
 .edit-form button:hover{

@@ -29,6 +29,8 @@ document.addEventListener("DOMContentLoaded", async () =>{
         });
 
         renderCharacters(allCharacters,characterList);
+        
+
     }catch(error){
         console.error("Error fetching Star Wars character:", error);
     }
@@ -114,18 +116,45 @@ async function renderCharacters(allCharacters, container) {
         // Save species directly in the object for filtering later
         character.speciesName = speciesName;
 
-        //Populate Character Card
-        characterDiv.innerHTML = `
-            <h2> ${character.name} </h2>
-            <p> <strong> Species : <strong> ${speciesName}</p>
-            <p> <strong> Birth Year : <strong> ${character.birth_year}</p>
-            <p> <strong> Films : <strong> ${filmTitle.join(",")}</p>
-        `
-        
-        const editButton =document.createElement("button");
-        editButton.innerHTML=`<i class="fa-solid fa-pen"></i>`;
+    
+        // Create elements for character card details
+        const nameElement = document.createElement("h2");
+        nameElement.textContent = character.name;
+
+        const speciesElement = document.createElement("p");
+        speciesElement.innerHTML =` <strong> Species : <strong> ${speciesName}`;
+
+        const birthYearElement = document.createElement("p");
+        birthYearElement.innerHTML =` <strong> Birth Year : <strong> ${character.birth_year}`;
+
+        const filmsElement = document.createElement("p");
+        filmsElement.innerHTML=`<strong> Films : <strong> ${filmTitle.join(",")}`;
+
+
+
+
+         //background Colour
+         characterDiv.style.backgroundColor = speciesBackgroundColor(speciesName);
+
+
+        // create edit button
+        const editButton = document.createElement("button");
+        editButton.innerHTML = `<i class="fa-solid fa-pen"></i>`;
         editButton.classList.add("edit-btn");
-        editButton.addEventListener("click",() => handleEditCharacter(character,characterDiv));  
+        editButton.addEventListener("click", () => {
+            const newName = prompt("Enter new name:", character.name);
+            const newBirthYear = prompt("Enter new birth year:", character.birth_year);
+            const newSpecies = prompt("Enter new species:", speciesName);
+
+            if (newName) nameElement.innerHTML = newName;
+            if (newBirthYear) birthYearElement.innerHTML = `<strong>Birth Year:</strong> ${newBirthYear}`;
+            if (newSpecies) {
+                speciesElement.innerHTML = `<strong>Species:</strong> ${newSpecies}`;
+                characterDiv.style.backgroundColor = speciesBackgroundColor(newSpecies);
+            }
+        });
+
+
         //Create delete button 
         const deleteButton = document.createElement("button");
         deleteButton.innerHTML = `<i class="fa-solid fa-trash"></i>`;
@@ -134,6 +163,11 @@ async function renderCharacters(allCharacters, container) {
             characterDiv.remove();                
         });
 
+       
+        characterDiv.appendChild(nameElement);
+        characterDiv.appendChild(speciesElement);
+        characterDiv.appendChild(birthYearElement);
+        characterDiv.appendChild(filmsElement);
         characterDiv.appendChild(editButton);
         characterDiv.appendChild(deleteButton);
         container.appendChild(characterDiv);
